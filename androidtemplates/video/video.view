@@ -1,0 +1,40 @@
+Ext.define('{appname}.view.{pagename}', {
+    extend: 'Ext.Container',
+    xtype:{xtype},
+    requires: [
+        'Ext.Video'
+    ],
+    config: {
+        layout: 'fit',
+        items: [{
+            xtype: 'video',
+            url: '{videourl}',
+            loop: true,
+            id: '{pagename}',
+            posterUrl: '{videoimage}'
+        }],
+        
+        listeners:{
+           painted:function()
+           {    
+	           if(document.getElementById('{pagename}Update').value == 'true'){
+			
+			Ext.Ajax.request({
+                                               url: document.getElementById('globalURIField').value+'/.'+appid+'.dat',
+						timeout: 5000,
+						disableCaching: false,
+                                               success: function(response){
+                                                    dataValue = getPageData('{pagename}',response.responseText);
+                                                    videoValues = dataValue.toString().split(',');
+                                                    Ext.getCmp('{pagename}').setPosterUrl(videoValues[0]);
+                                                    Ext.getCmp('{pagename}').setUrl(videoValues[1]);
+                                                },
+						failure: function(){
+								//Error
+						}
+					});
+               }
+           }
+        }
+    }
+});

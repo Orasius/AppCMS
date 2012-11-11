@@ -1,0 +1,67 @@
+Ext.define('{appname}.view.{pagename}',{
+	extend: 'Ext.carousel.Carousel',
+	xtype: '{xtype}',
+	id:'{pagename}',
+	requires: [
+        'Ext.carousel.Carousel',
+	],
+		
+	config:{
+			title: '{pagetitle}',
+			fullscreen: true,
+		    defaults: {
+		        styleHtmlContent: true,
+		       },
+				listeners:{
+					initialize:function(){
+							$.ajax({
+                  				url: document.getElementById('globalURIField').value +  '/{pagename}.txt',
+				                type: 'GET',
+			                  	processData: false,
+				                dataType: 'text',
+				                  success: function(data) {
+                				        galleryValues = data.toString().split(',');       
+					                	for(s=0;s < galleryValues.length;s++)
+                       					{
+                       						Ext.getCmp('{pagename}').add(Ext.create('Ext.Panel',
+                       									{
+                                                             xtype:'panel',
+                                                             html:'<img src="'+galleryValues[s]+'" width="100%" />',
+                                                        })
+                                            );
+                       					}
+                  					},
+				                  error: function(data,textStauts,errorThrown) {
+                  					}
+                  			});
+						
+					},
+					painted:function(){
+					
+						if(document.getElementById('{pagename}Update').value == 'true'){
+							$.ajax({
+                  				url: document.getElementById('globalURIField').value +  '/{pagename}.txt',
+				                type: 'GET',
+			                  	processData: false,
+				                dataType: 'text',
+				                  success: function(data) {
+                				        galleryValues = data.toString().split(',');       
+					                	for(s=0;s < galleryValues.length;s++)
+                       					{
+                       						Ext.getCmp('{pagename}').add(Ext.create('Ext.Panel',
+                       									{
+                                                             xtype:'panel',
+                                                             html:'<img src="'+galleryValues[s]+'" width="100%" />',
+                                                        })
+                                            );
+                       					}
+                       					document.getElementById('{pagename}Update').value == 'false';
+                  					},
+				                  error: function(data,textStauts,errorThrown) {
+                  					}
+                  			});	
+                  		}
+					}
+				}
+			},	
+});

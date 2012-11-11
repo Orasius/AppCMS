@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>{appname}</title>
+      <style>
+        html,body {
+            height: 100%;
+        }
+        .hiddenDiv{
+            display:none;
+        }    
+      </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+	<meta charset="utf-8">
+    <script type="text/javascript" charset="utf-8" src="cordova-1.9.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="jquery.min.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="PushNotification.js"></script>
+    <script type="text/javascript" src="childbrowser.js"></script>
+    <script type="text/javascript">
+       
+        var  globalFileName;
+        var  globalFileContent;
+        var  globalURI;
+        var  updatesJson = "hello";
+        var  currentFile = '';
+        var  currentData = '';
+        var  appid = 'xros.5017f51c1f48e';
+        var  platformurl = 'http://www.appc.ms/cms/';
+        var  lastupdate = '';
+        
+        allData = '{"entries":[{"title":"lastUpdate","data":"1348995447"},{"title":"About","data":"<div> Intermodal Europe is where the industry meet and do business</div><div> &nbsp;</div><div> Intermodal Europe is the must-attend event that brings the intermodal transport and logistics&nbsp;industry together.<br /> &nbsp;</div><div> The free-to-attend exhibition and conference covers all areas of container transport and logistics across road, rail and sea bringing together a mix of high-quality speakers and key exhibitors to provide an invaluable industry forum.</div> "}
+			,{"title":"FloorPlan","data":"<p><img alt=\'\' src=\'http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/floorplan.png\' style=\'width: 1217px; height: 1431px; \' /></p> "}
+			,{"title":"Sponsors","data":"<center><h1> Registration sponsor</h1><p><img alt=\'\' src=\'http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/seaco.jpg\' style=\'margin: 10px; width: 130px; height: 33px\' /><br /> &nbsp;</p><h1> Lanyard sponsor</h1><p><img alt=\'\' src=\'http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/valspar.jpg\' style=\'margin: 10px; width: 150px; height: 48px\' /></p><div class=\'paneltitle_2\'><h1> Badge&nbsp;sponsor</h1></div><div class=\'panelbody_2\'><!-- <UDF_formattedPage/> --><p style=\'text-align: center\'><img alt=\'b\' src=\'http://www.intermodal-events.com/g/2012/pb_176/badge_starcoollogoweb_2.jpg\' style=\'width: 150px; height: 26px\' /></p></div></center><p> &nbsp;</p> "}
+			,{"title":"Gallery","data":"http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal28.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal35.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal40.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal77.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal81.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal90.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal106.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal115.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal131.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal147.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal171.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal183.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal188.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal194.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal234.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal301.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal312.gif,http://www.appc.ms/cms/upload/apps/xros.5017f51c1f48e/intermodal357.gif"}
+			,{"title":"Exhibitors","data":"{\"items\":[{\"title\":\"ABC LTD\",\"html\":\"<p> to be added later</p> \"},{\"title\":\"BIOCONSERVACION\",\"html\":\"<p> <strong>Stand Number J36 </strong></p> <h3 style=\'color: red;\'> www.bioconservacion.com</h3> \"},{\"title\":\"Baojun Paint Co., Ltd.\",\"html\":\"<p> G10</p> \"},{\"title\":\"Baojun Paint Co., Ltd. \",\"html\":\"<p> Stand Number G10</p> \"},{\"title\":\"Bull Box \",\"html\":\"<p> D26</p> \"},{\"title\":\"C.I.M. S.p.A \",\"html\":\"<p> F30</p> \"},{\"title\":\"CAI International\",\"html\":\"<p> D6</p> \"},{\"title\":\"CETEM CONTAINERS BV \",\"html\":\"<p> E6</p> \"},{\"title\":\"CIS Container Corporation LLP\",\"html\":\"<p> G8</p> \"},{\"title\":\"CPI Group\",\"html\":\"<p> H36</p> \"},{\"title\":\"Cargotec Netherlands B.V.\",\"html\":\"<p> B42</p> \"},{\"title\":\"Carrier Transicold \",\"html\":\"<p> C26 www.transicold.carrier.com</p> \"},{\"title\":\"Caru Containers B.V. \",\"html\":\"<p> B36</p> \"},{\"title\":\"Container Applications International (UK) Limited \",\"html\":\"<p> D6</p> \"},{\"title\":\"Container Owners Association\",\"html\":\"<p> H10</p> \"},{\"title\":\"Crane Composites Inc \",\"html\":\"<p> H50</p> \"},{\"title\":\"Cronos Container Group \",\"html\":\"<p> C16</p> \"},{\"title\":\"DEKRA Automobil GmbH \",\"html\":\"<p> G30</p> \"},{\"title\":\"DSM Innovation Center \",\"html\":\"<p> G50</p> \"},{\"title\":\"Daikin Industries Ltd \",\"html\":\"<p> E32</p> \"},{\"title\":\"Dubbelman Container Transporten BV\",\"html\":\"<p> F10</p> \"},{\"title\":\"Emerson Climate Technologies \",\"html\":\"<p> D10</p> \"},{\"title\":\"FLORENS CONTAINER SERVICES UK LTD \",\"html\":\"<p> E16</p> \"},{\"title\":\"Flex Box Ltd\",\"html\":\"<p> E10</p> \"},{\"title\":\"Fort Vale Engineering Ltd \",\"html\":\"<p> J16</p> \"},{\"title\":\"Germanischer Lloyd SE \",\"html\":\"<p> G14</p> \"},{\"title\":\"Globe Tracker International ApS \",\"html\":\"<p> Speaking Sponsor</p> \"},{\"title\":\"Govet B.v\",\"html\":\"<p> H34</p> \"},{\"title\":\"Grand View Container Trading BV \",\"html\":\"<p> F8</p> \"},{\"title\":\"GreenCat GMBH \",\"html\":\"<p> J38</p> \"},{\"title\":\"HEMPEL AS\",\"html\":\"<p> F46</p> \"},{\"title\":\"IInterchange Systems Private Limited \",\"html\":\"<p> G32</p> \"},{\"title\":\"JadeWeserPort Logistics Zone GmbH & Co. KG \",\"html\":\"<p> H38</p> \"},{\"title\":\"John Evans International\",\"html\":\"<p> J10,J8</p> \"},{\"title\":\"Klinge Corporation \",\"html\":\"<p> F36</p> \"},{\"title\":\"LAMILUX \",\"html\":\"<p> C44</p> \"},{\"title\":\"Langfang Sanli Woodworking Co. Ltd. \",\"html\":\"<p> G16</p> \"},{\"title\":\"Langh Ship Cargo Solutions\",\"html\":\"<p> D46</p> \"},{\"title\":\"Leghorn Srl \",\"html\":\"<p> F26</p> \"},{\"title\":\"LogistikNetz Berlin-Brandenburg e.V.\",\"html\":\"<p> A28</p> \"},{\"title\":\"MAERSK CONTAINER INDUSTRY A/S \",\"html\":\"<p> D16</p> \"},{\"title\":\"MATRADE\",\"html\":\"<p> H4,G6</p> \"},{\"title\":\"Meclift\",\"html\":\"<p> E46</p> \"},{\"title\":\"Mega Coatings Company Limited \",\"html\":\"<p> G26</p> \"},{\"title\":\"Naxco Logistics Benelux B.V.\",\"html\":\"<p> F10</p> \"},{\"title\":\"OneSeal A/S \",\"html\":\"<p> J32</p> \"},{\"title\":\"Oy Langh Ship Ab \",\"html\":\"<p> D46</p> \"},{\"title\":\"P & B Port\",\"html\":\"<p> F10</p> \"},{\"title\":\"PORT AUTONOME DE STRASBOURG \",\"html\":\"<p> F10</p> \"},{\"title\":\"Qingdao Xin Sanly Reefer \",\"html\":\"<p> F16</p> \"},{\"title\":\"RCC Container Trading\",\"html\":\"<p> E6</p> \"},{\"title\":\"RMI Global Logistics Service \",\"html\":\"<p> E6</p> \"},{\"title\":\"Real Asset Management Plc \",\"html\":\"<p> B10</p> \"},{\"title\":\"SeaCube Containers LLC \",\"html\":\"<p> B26</p> \"},{\"title\":\"Seaco Global Limited \",\"html\":\"<p> B16</p> \"},{\"title\":\"Seateq Corp \",\"html\":\"<p> F14</p> \"},{\"title\":\"Senmatic A/S \",\"html\":\"<p> G48</p> \"},{\"title\":\"Shanghai Xinfan Container Fittings Co., Ltd \",\"html\":\"<p> J22</p> \"},{\"title\":\"Shengji Special Container (SHA) \",\"html\":\"<p> <strong>Stand Number A26</strong></p> \"},{\"title\":\"Shining Fortune \",\"html\":\"<p> J22</p> \"},{\"title\":\"Sicom S.p.a Containers \",\"html\":\"<p> E8</p> \"},{\"title\":\"System Planning Corporation/Global Trak \",\"html\":\"<p> F28</p> \"},{\"title\":\"TAL International Container Corporation \",\"html\":\"<p> E26</p> \"},{\"title\":\"TOUAX Group\",\"html\":\"<p> D36</p> \"},{\"title\":\"TOUAX Group \",\"html\":\"<p> D36</p> \"},{\"title\":\"Textainer\",\"html\":\"<p> Meeting Room</p> \"},{\"title\":\"The Valspar Germany GmbH \",\"html\":\"<p> H26 LANYARD SPONSOR</p> \"},{\"title\":\"Thermo King Services Limited \",\"html\":\"<p> C6</p> \"},{\"title\":\"Tianjin Dowill Paints & Chemical Co LTD. \",\"html\":\"<p> H46</p> \"},{\"title\":\"TydenBrooks Security Products Group \",\"html\":\"<p> A2</p> \"},{\"title\":\"Unit 45 \",\"html\":\"<p> F6</p> \"},{\"title\":\"Wenzhou Haoshi Light Industry Partners Co Ltd \",\"html\":\"<p> G28</p> \"},{\"title\":\"World Cargo News \",\"html\":\"\"},{\"title\":\"Yangzhou Tonglee Reefer Container Co., Ltd.\",\"html\":\"<p> B44</p> \"},{\"title\":\"ZENATEK SARL \",\"html\":\"<p> Stand Number G9<br /> Webpage: www.zenatek.eu</p> \"},{\"title\":\"ZHENJIANG DONGFANG ELECTRIC HEATING TECHNOLOGY CO., LTD. \",\"html\":\"<h3> <strong>Stand Number J14</strong><br /> <u><strong>Webpage:</strong></u> <span style=\'color: rgb(255, 0, 0);\'>www.dongfang-heater.com</span></h3> \"}]}"}
+			,{"title":"ContactInfo","data":"<p align=\'center\' style=\'margin: 0px; padding: 0px; color: rgb(57, 57, 57); font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 19px; \'><strong>INFORMA EXHIBITIONS<br /> 5th Floor, 29 Bressenden Place<br /> London<br /> SW1E 5EW</strong></p><div id=\'teamlist\' style=\'margin: 0px; padding: 0px; color: rgb(57, 57, 57); font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 19px; text-align: left; \'><table border=\'0\'><tbody><tr><td align=\'center\' style=\'vertical-align: top; \'><img alt=\'Sophie Ahmed\' border=\'0\' src=\'http://www.intermodal-events.com/g/2012/teamPhotos/sophieahmed.gif\' /></td><td style=\'vertical-align: top; \' valign=\'top\'><a href=\'mailto:sophie.ahmed@informa.com?subject=Intermodal%20Europe%202012%20Enquiry\' style=\'color: rgb(242, 101, 34); text-decoration: none; \'>Sophie Ahmed</a>&nbsp;<br /> Event Director&nbsp;<br /> Tel: +44 (0)20 7017 5112&nbsp;<br /> Fax: +44 (0)20 7017 7818</td></tr><tr><td colspan=\'3\' style=\'vertical-align: top; \'><hr size=\'1\' /></td></tr><tr><td align=\'center\' style=\'vertical-align: top; \'><img alt=\'Charlie Howard\' border=\'0\' src=\'http://www.intermodal-events.com/g/2012/teamPhotos/charlie.gif\' /></td><td style=\'vertical-align: top; \' valign=\'top\'><a href=\'mailto:charlie.howard@informa.com?subject=Intermodal%20Europe%202012%20Enquiry\' style=\'color: rgb(242, 101, 34); text-decoration: none; \'>Charlie Howard</a>&nbsp;<br /> Sales Executive&nbsp;<br /> Tel: +44 (20) 701 76798&nbsp;<br /> Fax: +44 (0)20 7017 7818</td></tr><tr><td colspan=\'3\' style=\'vertical-align: top; \'><hr size=\'1\' /></td></tr><tr><td align=\'center\' style=\'vertical-align: top; \'><img alt=\'Peter Orford\' border=\'0\' src=\'http://www.intermodal-events.com/g/2012/teamPhotos/peter_orford.jpg\' /></td><td style=\'vertical-align: top; \' valign=\'top\'><a href=\'mailto:peter.orford@informa.com?subject=Intermodal%20Europe%202012%20Enquiry\' style=\'color: rgb(242, 101, 34); text-decoration: none; \'>Peter Orford</a>&nbsp;<br /> Marketing Manager&nbsp;<br /> Tel: +44 (0)20 3377 3384&nbsp;<br /> Fax: +44 (0)20 7017 7818</td></tr><tr><td colspan=\'3\' style=\'vertical-align: top; \'><hr size=\'1\' /></td></tr><tr><td align=\'center\' style=\'vertical-align: top; \'><img alt=\'Gillian McGuigan\' border=\'0\' src=\'http://www.intermodal-events.com/g/2012/teamPhotos/gillianmcguigan.gif\' /></td><td style=\'vertical-align: top; \' valign=\'top\'><a href=\'mailto:gillian.mcguigan@informa.com?subject=Intermodal%20Europe%202012%20Enquiry\' style=\'color: rgb(242, 101, 34); text-decoration: none; \'>Gillian McGuigan</a>&nbsp;<br /> Marketing Executive&nbsp;<br /> Tel: +44 (20) 701 76366&nbsp;<br /> Fax: +44 (0)20 7017 7818</td></tr><tr><td colspan=\'3\' style=\'vertical-align: top; \'><hr size=\'1\' /></td></tr><tr><td align=\'center\' style=\'vertical-align: top; \'><img alt=\'Alison Brown\' border=\'0\' src=\'http://www.intermodal-events.com/g/2012/teamPhotos/alison_brown.jpg\' /></td><td style=\'vertical-align: top; \' valign=\'top\'><a href=\'mailto:alison.brown@informa.com?subject=Intermodal%20Europe%202012%20Enquiry\' style=\'color: rgb(242, 101, 34); text-decoration: none; \'>Alison Brown</a>&nbsp;<br /> Operations Manager&nbsp;<br /> Tel: +44 (0)20 7017 74500&nbsp;<br /> Fax: +44 (0)20 7017 7818</td></tr><tr><td colspan=\'3\' style=\'vertical-align: top; \'><hr size=\'1\' /></td></tr><tr><td align=\'center\' style=\'vertical-align: top; \'><img alt=\'Emma Hilditch\' border=\'0\' src=\'http://www.intermodal-events.com/g/2012/teamPhotos/emmahilditch.gif\' /></td><td style=\'vertical-align: top; \' valign=\'top\'><a href=\'mailto:emma@subjectmatters.co.uk?subject=Intermodal%20Europe%202012%20Enquiry\' style=\'color: rgb(242, 101, 34); text-decoration: none; \'>Emma Hilditch</a>&nbsp;<br /> Conference Producer&nbsp;<br /> Tel: +44 (0)870 950 3313</td></tr><tr><td colspan=\'3\' style=\'vertical-align: top; \'><hr size=\'1\' /></td></tr><tr><td align=\'center\' style=\'vertical-align: top; \'><img alt=\'Amy Ford\' border=\'0\' src=\'http://www.intermodal-events.com/g/2012/teamPhotos/staff_amy.jpg\' /></td><td style=\'vertical-align: top; \' valign=\'top\'><a href=\'mailto:amy.ford@informa.com?subject=Intermodal%20Europe%202012%20Enquiry\' style=\'color: rgb(242, 101, 34); text-decoration: none; \'>Amy Ford</a>&nbsp;<br /> Sales and Events Administrator&nbsp;<br /> Tel: +44 (0)20 7017 7019&nbsp;<br /> Fax: +44 (0)20 7017 7818</td></tr></tbody></table></div>"}
+			,{"title":"IntermodalEurope","data":"About,page,aboutView|Floor Plan,page,floorPlanView|Visitors Information,page,visitorsInformationView|Exhibitors,page,exhibitorsView"},{"title":"Contact","data":"Contact Info,page,contactinfoView|Facebook,customfunction,http://www.facebook.com/pages/Intermodal-Europe/134897396597512|Twitter,customfunction,https://twitter.com/IntermodalEurop|Linkedin,customfunction,http://www.linkedin.com/groups/Intermodal-Europe-Exhibition-2842945|Press Release,page,pressReleaseView"},{"title":"VisitorsInformation","data":"Hotel Booking,customfunction,https://www.rai-hotelservice.com/compass/external/index.cfm?meeting_ID=1654&Meeting_ID_Code=421374880|Visiting Amsterdam,page,visitAmsterdamView"},{"title":"HotelBooking","data":"Hotel Booking Info"}
+			,{"title":"VisitAmsterdam","data":"<div class=\'sheetbody fullsheet\' style=\'margin: 0px 0px 10px; padding: 0px; float: left; width: 539px; color: rgb(57, 57, 57); font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 19.200000762939453px; \'><div class=\'bodysheet\' style=\'margin: 0px; padding: 0px; line-height: 1.45em; \'><p style=\'margin: 0px; padding: 0px 0px 15px; \'> Amsterdam is one of the greatest small cities in the world. From its canals to world-famous museums and historical sights, Amsterdam is one of the most romantic and beautiful cities in Europe.</p><p style=\'margin: 0px; padding: 0px 0px 15px; \'> Amsterdam is also a city of tolerance and diversity. It has all the advantages of a big city: culture, nightlife, international restaurants, good transport - but is quiet, and largely thanks to its extensive canals, has a little road traffic. In Amsterdam your destination is never far away.</p><p style=\'margin: 0px; padding: 0px 0px 15px; \'><strong>Amsterdam</strong><strong>&nbsp;facts</strong><img alt=\'a\' src=\'http://www.intermodal-events.com/g/2012/logos/amsterdam1.jpg\' style=\'float: right; width: 240px; height: 160px; \' /></p><ul style=\'margin: 0px 0px 0px 1.3em; padding-right: 0px; padding-left: 0px; list-style-image: url(http://www.intermodal-events.com/g/2012/template/square_bullet.gif); \'><li> Population of approx 780,000 (city)</li><li> 51 museums, 141 galleries, 206 paintings by Van Gogh, 40 concerts a day.</li><li> 1,250 restaurants, 1,215 pubs and bars, 36 nightclubs.</li><li> 550,000 bicycles, 1,281 bridges, 200 km canals, 6 windmills.</li></ul></div></div><br clear=\'all\' style=\'color: rgb(57, 57, 57); font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 0px; \' /><div class=\'hoz\' style=\'margin: 0px; padding: 0px; color: rgb(57, 57, 57); font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 19.200000762939453px; \'> &nbsp;</div><div class=\'sheetbody fullsheet\' style=\'margin: 0px 0px 10px; padding: 0px; float: left; width: 539px; color: rgb(57, 57, 57); font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 19.200000762939453px; \'><h2 style=\'margin: 0px; padding: 0px 0px 10px; font-size: 1.3em; color: rgb(0, 0, 0); border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(231, 235, 245); \'> Amsterdam RAI</h2><div class=\'bodysheet\' style=\'margin: 0px; padding: 0px; line-height: 1.45em; \'><p style=\'margin: 0px; padding: 0px 0px 15px; \'> Amsterdam RAI<br /> Europaplein<br /> NL 1078 GZ<br /> Amsterdam<br /> Holland</p><p style=\'margin: 0px; padding: 0px 0px 15px; \'> Intermodal Europe 2012 will take place at the Amsterdam RAI, one of Europe&#39;s most attractive and innovative conference and exhibition companies. Only 15 minutes from Schiphol Airport and the city centre of Amsterdam. The 11 multifunctional exhibition halls (87,000 m&sup2;) and 22 conference rooms are surrounded by cosmopolitan Amsterdam.</p><p style=\'margin: 0px; padding: 0px 0px 15px; \'> Amsterdam is easily accessible nationally and internationally through the European network of motorways, but also by train and tram - Amsterdam RAI has its &#39;own&#39; station within walking distance of the complex - and for air travelers through the international airport Schiphol.</p><p style=\'margin: 0px; padding: 0px 0px 15px; \'> During events in Amsterdam RAI&nbsp;<strong>RAI Parking</strong>&nbsp;the main parking for visitors and exhibitors. Directly situated at the junction of the A10 (exit S109) offers&nbsp;<strong>RAI Parking</strong>&nbsp;accommodates around 2,300 cars.</p></div></div><br clear=\'all\' style=\'color: rgb(57, 57, 57); font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 0px; \' /><div class=\'hoz\' style=\'margin: 0px; padding: 0px; color: rgb(57, 57, 57); font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 19.200000762939453px; \'><span style=\'color: rgb(0, 0, 0); font-size: 1.3em; line-height: 19.200000762939453px; \'>Port of Amsterdam</span></div><div class=\'sheetbody fullsheet\' style=\'margin: 0px 0px 10px; padding: 0px; float: left; width: 539px; color: rgb(57, 57, 57); font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 19.200000762939453px; \'><div class=\'bodysheet\' style=\'margin: 0px; padding: 0px; line-height: 1.45em; \'><p style=\'margin: 0px; padding: 0px 0px 15px; \'> The Amsterdam port area is one of the world&rsquo;s key international logistics hubs. It ranks as Europe&rsquo;s number 4 port and handles almost 91 million metric tons of cargo annually. The strategic and central location in Europe makes the port easy to reach and ensures excellent connections to all the major European markets. The Amsterdam port authority, &lsquo;Port of Amsterdam&rsquo;, is part of the local government. Port of Amsterdam operates, manages and develops the whole port area.</p><p style=\'margin: 0px; padding: 0px 0px 15px; \'><strong>Port of Amsterdam facts</strong></p><ul style=\'margin: 0px 0px 0px 1.3em; padding-right: 0px; padding-left: 0px; list-style-image: url(http://www.intermodal-events.com/g/2012/template/square_bullet.gif); \'><li> Port Area region 4,500 HA</li><li> Port Area Amsterdam 2,600 HA</li><li> Income &euro; 125 million</li><li> Yearly investment &euro; 40-50 million</li><li> Employment North Sea Canal Area (direct + indirect) 65,000</li><li> Number of companies in port area 2,000</li><li> Throughput region 90.7 million tons</li><li> Added value maritime industry 2007 &euro; 6.4 billion</li></ul></div></div> "}
+			,{"title":"PressRelease","data":"<p> Press Release information will be provided soon.</p><p> Thank you</p> "}
+			,{"title":"Day1Seminars","data":"<p><strong><strong>Day One &ndash; Tuesday 27<sup>th</sup> November 2012</strong><br /><br /> Theatre 1</strong></p><p><strong><strong>10:30-11:30&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Panel (Chat Show Style) of Shippers </strong></strong></p><p><strong>Frank Arendt, Associate Director, Western European Logistics Purchases, Procter &amp; Gamble<br /> Jaro Caban, Vice President Supply Chain, Provimi<br /> Danny Hendrikse, VP EMEA Supply Chain Operations, Pfizer - Global Logistics &amp; Supply<br /><br /> 11:45-13:00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CLECAT Freight Forwarders Panel</strong></p><p> Logistics Partnering In Practice: Challenges facing the dynamic freight forwarding industry&nbsp;</p><ul><li><strong>Developing Intelligent cargo to improve efficiency and sustainability</strong></li><li><strong>Manage complex supply chains through intelligent IT systems</strong></li><li><strong>Demonstrating great technology, sophisticated systems and data management</strong></li><li><strong>Forecasting future innovation and market trends</strong></li><li><strong>How will these affect operations in the future?</strong></li></ul><p><strong><strong>Chair: </strong><strong>Nicolette van der Jagt, Director General, CLECAT</strong><br /> Jaco Voorspruij, ITBD Manager, DHL Supply Chain<br /><br /> 13:30-14:15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Sea Container Trade and Economic Outlook</strong><br /><br /> Overview of the immediate outlook for the industry focusing on both current challenges and future prospects.&nbsp; The session will focus on key issues including:</strong></p><ul><li><strong>Demand &amp; supply</strong></li><li><strong>Implication for ports, suppliers, 3PLs and shippers</strong></li><li><strong>Introducing the &ldquo;case for a change&rdquo; in market relationships and the need for better information</strong></li></ul><p><strong>Mike Garratt, Managing Director, MDS Transmodal </strong></p><p><strong>14:30-15:15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Focus on Asia:</strong><strong>Sea Container Trade and Economic Outlook</strong></strong></p><p><strong>Spot rates on the Asia-Europe trade <a href=\'http://click.ubm-news.com/?qs=57b646c181a87e4ba4268fdc65306b54ef42390116d44b93b0754ce258d5f672894c00ab989656fb\' target=\'_blank\'>keep falling</a>, and trans-Pacific spot rates <a href=\'http://click.ubm-news.com/?qs=57b646c181a87e4be95d2a701f27c3e351d80ee5f9031d1bf2519aa01e4fb2ce8e5f00368a643fd8\' target=\'_blank\'>have also retreated from recent highs</a>. What do you think the second half of 2012 has in store?<br /><br /> Gopal R, Vice President, Transportation and Logistics Practice Asia Pacific, Frost &amp; Sullivan Malaysia<br /> Jonathan Beard, Managing Director, GHK, Hong Kong</strong></p><p><strong><strong>15:30-16:30&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; New World of Sustainable Commercial Container Flooring</strong></strong></p><ul><li><strong>Testing alternatives</strong></li><li><strong>Competitive solutions</strong></li><li><strong>Outlook for the future</strong></li></ul><p><strong>Scandiwood<br /> Eko-flor/Conforce<br /> New Atlantic Flooring<br /> Gert J&oslash;rgensen, Technical Director, Maersk Container Industri AB (invited)</strong></p><p><strong><strong>Theatre 2<br /> High and Dry: Port Issues for Intermodal Transport<br /> Who should attend: shipping lines, agents, terminal managers, supply chain, transport and logistics professionals</strong></strong></p><p><strong>Chair:</strong></p><p><strong>10:30-11:30&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Case Study: JadeWeserPort Road, Rail and Short Sea Transport </strong></strong></p><p><strong>R&uuml;diger Beckmann, Sales Director, JadeWeserPort Logistics Zone<br /> Torsten Meyer, Sales Director and proxy holder of EUROGATE<br /> Timm Ulrich Niebergall, Country Manager, Unifeeder Germany</strong></p><p><strong>11:45-12:30&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Case Study of Rotterdam: Hinterland Transport by Rail</strong><br /><br /> Rotterdam Port Railway: role, structure, facts</strong></p><ul><li><strong>Forecasts and Strategies to cope with expected growth (expansion projects, etc.)</strong></li><li><strong>Hinterland of the port of Rotterdam: routes, markets, statistics / volume</strong></li><li><strong>Competitive factors</strong></li></ul><p><strong>Wouter van Dijk, Head of Logistics, Port of Rotterdam<br /> Hans L. Lip, Director Business Development, Rotterdam Rail Feeding B.V.</strong></p><p><strong><strong>13:30-17:00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; World Port Strategy Forum hosted by Global Institute of Logistics (GIL) &amp; China Container Industry Association (CCIA)</strong></strong></p><p><strong><strong>Speakers:<br /> Shi Yanqui, Secretary General, China Container Industry Association<br /> Brendan Keating, CEO,&nbsp; Port of Cork<br /> Kieran Ring, CEO, Global Institute of Logistics<br /> William Yang-Lei, China Director, Global Institute of Logistics<br /> Pedro Jorge Rodriquez Zaragoza, President, Port of Tenerife Authority<br /> Vincent de Saedeleer, Vice President, Port Authority of Zeebrugge<br /> Betty Princen, Chief Representative &ndash; Europe, Port of Virginia</strong></strong></p> "}
+			,{"title":"Day2Seminars","data":"<p><strong>Day Two &ndash; Wednesday 28th November 2012</strong></p><p> Theatre 1<br /><br /><strong>Innovations For The Enhancement of Intermodality</strong><br /> &nbsp;</p><ul><li> Recent developments in terminal technology and systems</li><li> Automating port operations future development trends</li><li> Efficient data management to provide better cargo and customer information</li></ul><p><strong>Who should attend</strong>: shippers, shipping lines, agents, supply chain, transport and logistics professionals</p><p><br /><strong>10:30-11:15&nbsp;Official Report: Technologies to Optimise Intermodal Transport in</strong><strong>Ports</strong><br /> &nbsp;</p><p> James Douglas, Managing Director, Container Port and co-author, European Space Agency report &ldquo;i-Port&rdquo;<br /> &nbsp;</p><p><strong>11:30-12:15&nbsp;Technology case study</strong>:</p><p> Don Miller, Director, Globe Tracker Inc.</p><p><strong>12:30-13:15&nbsp;Technology case study</strong>: <strong>Successful competitive hinterland</strong><strong>networks</strong></p><p> Walter Kusters, Business Unit Manager - Logistics, Ab-Ovo</p><p><strong>Intermodal Innovation in the</strong><strong>Spotlight</strong><br /><br /><strong>Who should attend</strong>:<strong></strong>shippers, shipping lines, agents, terminal managers, ports, supply chain, transport and logistics professionals<br /><br /><strong>14:45</strong> - <strong>14:00 </strong>- <strong>Inland Navigation: long-term strategies for moving more goods via accessible and navigable waterways</strong><br /><br /> Current transport patterns are at a turning point. We see an increasing number of companies looking for innovative transport solutions to save costs and emissions. Rivers and canals can form an important part of these solutions.</p><ul><li> The role of inland waterways in the intermodal mix</li><li> Port issues</li><li> Economic outlook</li></ul><p><strong>Chair</strong>: Herman Journe&eacute;, Director of Strategic Development, Port of Amsterdam &amp; Chairman Eco Sustainable Logistic Chain Foundation (ECOSL)<br /> Anton van Hattem, Director, SCS Multiport/CWT<br /> Paul Ham from ECT terminals Rotterdam<br /> Edwin Wenink , Manager Supply Chain Development , FloraHolland&nbsp;</p><p><strong>15:00</strong>-<strong>15:45</strong>&nbsp;<strong>Hinterland corridors in Southern Europe</strong><br /><br /> Latest research and data on intermodal O/D (origin/destination) routes in South East Europe for traffic to and from Central/Northern Europe focusing on:</p><ul><li> Costs, time, internal costs elements and environmental performance</li><li> Impact on traffic to and from the Far East, the Black Sea, Africa and Central Europe</li><li> Presentation based on research for the European Commission and published in the European Intermodal Atlas 2012&nbsp;&nbsp;<br /> &nbsp;</li></ul><p> Dr Walter Vassallo, Director, MARI (Maritime Association for Research and Innovation)&nbsp;</p><p> 16:00-<strong>16:45</strong>&nbsp;<strong>BTJ Session </strong>(<strong>tbc</strong>)</p><p><strong>Theatre 2</strong></p><p><strong>High and Dry: Port Issues for Intermodal Transport</strong></p><p><strong><strong>Who should attend: </strong>shipping lines<strong>, </strong>agents<strong>, </strong>terminal managers<strong>, </strong>supply chain<strong>, </strong>transport and logistics professionals</strong></p><p><br /><strong>10:30</strong>-<strong>11:15</strong>&nbsp;<strong>Global economic and trade trends</strong>: <strong>game changer for ports?</strong></p><p><strong>11:30-12:15&nbsp;World Ports Climate Initiative</strong></p><p> Fer van de Laar, Managing Director, The International Association for Ports and Harbors Europe Office</p><p><strong>12:30-13:15&nbsp;Ewan French, COO, Barloworld</strong></p><p><strong>13:30</strong>-14<strong>:15&nbsp;Overview of </strong>&ldquo;<strong>Green Freight Europe&rdquo;</strong><strong>and how it</strong><strong>fits into the intermodal picture</strong><br /><br /> Dr Andrew Traill, Green Freight Europe</p><p><strong>14:30-15:15&nbsp;Logistics case study: First Year in Europe &ndash; highs and lows</strong></p><p><strong>15:30</strong>-<strong>16:15</strong>&nbsp;<strong>Human Factors in Intermodal Transport</strong><br /><br /> Alan Robertson, Director, Webster Robertson</p><p> &nbsp;</p> "}
+			,{"title":"Day3Seminars","data":"<p><strong>Day Three &ndash; Thursday 29th November 2012</strong></p><p><strong>Theatre 1</strong></p><p><strong>Sustainable shipping in an increasingly competitive global market</strong></p><p><strong>Who should attend:&nbsp;</strong>shippers, shipping lines, agents, terminal managers, ports, supply chain, transport and logistics professionals<br /><br /><strong>10:30-12:00</strong>&nbsp;<strong>Green Logistics<br /><br /> Investigating ways of reducing the carbon</strong><strong>footprint of goods being shipped in deep</strong>-sea containers through <strong>the maritime supply chain</strong>.<br /><br /> Signe Bruun Jensen, Environmental Partnership &amp; Policy Manager, Sustainability Maersk Line (No &ndash; in Asia)<br /> Kartik Kumar, Director - Marketing &amp; Strategic Planning, Carrier Transicold<br /> Alisdair Pettigrew, Senior Advisor Shipping Operation, Carbon War Room<br /> Ferdinand Kranenburg, Clean Shipping Index<br /><br /><strong>12.30-13:15</strong>&nbsp;<strong>Technical container session</strong>: <strong>Water Soluble Paint</strong><br /><br /><strong>Theatre 2</strong><br /><br /><strong>Identifying gaps in cargo transport security to improve security and efficiency for the supply chain</strong><br /><br /> 10<strong>:30-11:30</strong>&nbsp;<strong>Thorsten Neumann,</strong><strong>Chairman, TAPA-EMEA</strong><strong>and Head of Cargo</strong><strong>Security</strong>, <strong>Nokia</strong><br /><br /><strong>11:45-12:30&nbsp;How to monitor goods in the Intermodal process?</strong><br /><br /> Robert Svensson, Transportation Solutions, Emerson Climate Technologies</p> "}
+			,{"title":"Seminars","data":"Day 1 Seminars,page,seminarsDay1View|Day 2 Seminars,page,seminarsDay2View|Day 3 Seminars,page,seminarsDay3View"}]}';
+        	
+        function getPageData(pageName,jsonData)
+        {
+            getData = jQuery.parseJSON(jsonData);
+            for(c = 0;c < getData.entries.length;c++)
+            {	
+                if(getData.entries[c].title == pageName)
+                    pageData = getData.entries[c].data;
+            }
+            return pageData;
+        }
+     
+
+        function checkUpdates()
+        {
+    			$.ajax({
+                                url: document.getElementById('globalURIField').value+'/.'+appid+'.dat',
+                                type: 'GET',
+                                processData: false,
+                                dataType: 'text',
+                                success: function(response){
+                                            newData = jQuery.parseJSON(response.responseText);
+                                            lastUpdate = newData.entries[0].data;
+                                            updateFromWeb(platformurl + 'androidupdate.php?id='+appid+'&lastupdate='+lastUpdate);
+				 },
+                                failure: function(){
+                                        // Fail to update
+                                }
+				});					
+        }
+        
+        function onDeviceResume()
+        {
+        	 checkUpdates();
+        }
+        
+        
+        function writeCurrentFile()
+        {
+            writeFile(currentFile,currentData);
+            console.log('WRITING FILE = ' + currentFile);
+        }
+        
+
+        function onDeviceReady() {
+            document.addEventListener("resume", onDeviceResume, false);
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+        }
+        
+        function onFileSystemSuccess(fileSystem) {
+            globalURI = fileSystem.root.fullPath;
+            //fileSystemRoot = fileSystem.root;
+            document.getElementById('globalURIField').value = globalURI;
+            setFileName('.'+appid+'.dat');
+            setFileContent(allData);
+            gotFSWrite(fileSystem,'.'+appid+'.dat');
+        }
+        
+        
+        function fail(evt) {
+            console.log(evt);
+        }
+        
+        
+        /************************ 
+         Writing File
+         *************************/
+        
+         function writeFile(fileName,data)
+         {
+             setFileName(fileName);
+             setFileContent(data);
+             loadFileSystemForWriting(fileName);
+             //gotFSWrite(fileSystem,fileName);
+         }
+        
+         function loadFileSystemForWriting(fileName) 
+         {
+             window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFSWrite, fail);
+         }
+         
+        
+        function gotFSWrite(fileSystem,fileName) {
+        	fileSystem.root.getFile(globalFileName, {create: true,exclusive: false}, gotFileEntryWriter, fail);
+        }
+                
+        
+        function gotFileEntryWriter(fileEntry) {
+            fileEntry.createWriter(gotFileWriter, fail);
+        }
+        
+        
+        function gotFileWriter(writer) {
+            
+            writer.onwrite = function(evt) {
+            	conole.log('WRITTEN');
+            	//console.write('Current Writing File = ' + globalFileName);
+            	//console.write('Current Writing File Data = ' + globalFileContent);
+            };
+            writer.write(globalFileContent);
+        }
+    
+        function setFileName(fileName)
+        {
+            globalFileName = fileName;
+        }
+        
+        function setFileContent(data)
+        {
+            globalFileContent = data;
+        }
+        
+        
+        /************************ 
+         End of Writing File
+         *************************/
+        
+        /**********************
+         Reading files from Web
+         ***********************/
+        function getWebFileContent(userurl)
+        {
+            document.getElementById('indi').className = 'indiOn';
+            $.ajax({
+                   url: userurl,
+                   type: 'GET',
+                   processData: false,
+                   dataType: 'text',
+                   success: function(data) {
+                        document.getElementById('indi').className = 'indiOff';
+                        updatesJson = data;
+                   },
+                   error: function(data,textStauts,errorThrown) {
+                        console.log('Error! ' + errorThrown);
+                   }
+                   });
+        }
+        
+		
+        function updateFromWeb(userurl)
+        {
+            $.ajax({
+                   url: userurl,
+                   type: 'GET',
+                   processData: false,
+                   dataType: 'text',
+                   success: function(data) {
+                        if(data != 'no')
+                        {
+                        	currentFile='.'+appid+'.dat';
+                        	currentData = data;
+                        	//console.log('UPDATE DATA = ' + data);
+                        	writeCurrentFile();
+                        	document.getElementById('updateData').value = 'YES';
+                                document.getElementById('GalleryUpdate').value = 'true';
+                                document.getElementById('AboutUpdate').value = 'true';
+                                document.getElementById('FloorPlanUpdate').value = 'true';
+                                document.getElementById('SponsorsUpdate').value = 'true';
+                                document.getElementById('ContactInfoUpdate').value = 'true';
+                                document.getElementById('HotelBookingUpdate').value = 'true';
+                                document.getElementById('VisitAmsterdamUpdate').value = 'true';
+                                document.getElementById('PressReleaseUpdate').value = 'true';
+                                document.getElementById('Day1SeminarsUpdate').value = 'true';
+                                document.getElementById('Day2SeminarsUpdate').value = 'true';
+                                document.getElementById('Day3SeminarsUpdate').value = 'true';
+                                document.getElementById('ExhibitorsUpdate').value = 'true';
+                                document.getElementById('IntermodalEuropeUpdate').value = 'true';
+                                document.getElementById('ContactUpdate').value = 'true';
+                                document.getElementById('VisitorsInformationUpdate').value = 'true';
+                                document.getElementById('SeminarsUpdate').value = 'true';
+                                
+                        }
+                        else{
+                            //console.log('No Update');
+                        }
+                   },
+                   error: function(data,textStauts,errorThrown) {
+                        console.log('Error! ' + errorThrown);
+                   }
+                   });
+        }
+	function onBodyLoad()
+	{		
+		document.addEventListener("deviceready", onDeviceReady, false);	
+		document.addEventListener("deviceready", initPushwoosh, true);
+		
+		document.addEventListener('push-notification', function(event) {
+                    /*
+                        CODE FOR RECEIVING NOTIFICATION
+			var title = event.notification.title;
+                        var userData = event.notification.userdata;
+                        console.warn('user data: ' + JSON.stringify(userData));
+                        navigator.notification.alert(title);
+                    */
+                });
+        		
+  	}
+        
+        
+        
+        function html_entity_decode (string, quote_style) {
+            var hash_map = {},
+            symbol = '',
+            tmp_str = '',
+            entity = '';
+            tmp_str = string.toString();
+            
+            if (false === (hash_map = this.get_html_translation_table('HTML_ENTITIES', quote_style))) {
+                return false;
+            }
+            
+            // fix &amp; problem
+            // http://phpjs.org/functions/get_html_translation_table:416#comment_97660
+            delete(hash_map['&']);
+            hash_map['&'] = '&amp;';
+            
+            for (symbol in hash_map) {
+                entity = hash_map[symbol];
+                tmp_str = tmp_str.split(entity).join(symbol);
+            }
+            tmp_str = tmp_str.split('&#039;').join("'");
+            
+            return tmp_str;
+        }
+        
+    
+        
+        function stripslashes(str) {
+            str=str.replace(/\\'/g,'\'');
+            str=str.replace(/\\"/g,'"');
+                            str=str.replace(/\\0/g,'\0');
+                            str=str.replace(/\\\\/g,'\\');
+                            return str;
+                            }
+                            
+    </script>
+    <script id="microloader" type="text/javascript" src="sdk/microloader/development.js"></script>
+    <script type="text/javascript" src="encoder.js"></script>
+  </head>
+  <body onload="onBodyLoad()">
+      <div id="loadingDiv">
+		<img src="loading.png" width="100%" height="100%" />
+		<div style="position:fixed;top:80%;left:40%;color:#000;font-size:20px;">
+			Loading ...
+		</div>
+	</div>
+      <input type="hidden" id="globalURIField" value="1" />
+      <input type="hidden" id="updateData" value="false" />
+       <input type="hidden" id="GalleryUpdate" value="false" />
+	<input type="hidden" id="AboutUpdate" value="false" />
+	<input type="hidden" id="FloorPlanUpdate" value="false" />
+	<input type="hidden" id="SponsorsUpdate" value="false" />
+	<input type="hidden" id="ContactInfoUpdate" value="false" />
+	<input type="hidden" id="HotelBookingUpdate" value="false" />
+	<input type="hidden" id="VisitAmsterdamUpdate" value="false" />
+	<input type="hidden" id="PressReleaseUpdate" value="false" />
+	<input type="hidden" id="Day1SeminarsUpdate" value="false" />
+	<input type="hidden" id="Day2SeminarsUpdate" value="false" />
+	<input type="hidden" id="Day3SeminarsUpdate" value="false" />
+	<input type="hidden" id="ExhibitorsUpdate" value="false" />
+	<input type="hidden" id="IntermodalEuropeUpdate" value="false" />
+	<input type="hidden" id="ContactUpdate" value="false" />
+	<input type="hidden" id="VisitorsInformationUpdate" value="false" />
+	<input type="hidden" id="SeminarsUpdate" value="false" />
+	
+  </body>
+</html>

@@ -1,0 +1,36 @@
+Ext.define('{appname}.view.{pagename}',{
+	extend: 'Ext.carousel.Carousel',
+	xtype: '{xtype}',
+	requires: [
+        'Ext.carousel.Carousel',
+	],
+		
+	config:{
+			title: '{pagetitle}',
+			fullscreen: true,
+		    defaults: {
+		        styleHtmlContent: true,
+		       },
+				listeners:{
+					initialize:function(){
+						
+						var myStore = Ext.getStore('{pagename}');
+						myStore.load();
+						var cc = 0;
+						while(cc < myStore.getCount())
+						{
+							//this.add(this,myStore.record('title'));
+							//console.log(myStore.getAt(cc).get('title'));
+							this.add(Ext.create('Ext.Panel',{
+								html:myStore.getAt(cc).get('title'),
+							}));
+							
+							cc++;
+						}
+						//console.log(myStore.getCount());
+						
+					}
+
+				}
+			},	
+});

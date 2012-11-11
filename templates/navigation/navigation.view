@@ -1,0 +1,70 @@
+Ext.define('{appname}.view.{pagename}',{
+		extend: 'Ext.NavigationView',
+		xtype: '{xtype}',
+		
+		
+		requires: [
+			'Ext.NavigationView',
+		],
+		
+		config: {			
+		items:[
+			{
+				xtype: 'panel',
+				title: '{pagetitle}',
+				styleHtmlContent: true,
+				fullscreen: true,
+				scrollable:true,
+				id: '{pagename}',
+				layout: {
+				        type: 'vbox',
+				    },
+				
+				defaults: {
+				        xtype: 'button',
+				        margin: 10,
+						padding:10,
+						width: '250px',
+						align: 'left',
+				    },
+				items:[
+				],
+			}
+		],
+		listeners:{
+                initialize:function(){
+           				Ext.Ajax.request({
+                           		url: document.getElementById('globalURIField').value +  '/{pagename}.txt',
+                           		type: 'GET',
+                           		processData: false,
+                           		dataType: 'text',
+                           			success: function(data) {
+                           				Ext.getCmp('{pagename}').removeAll();
+                                		eval(data.responseText);
+                            		},
+                            		error: function(data,textStauts,errorThrown) {
+                                		console.log('Error in Navigation! '+textStauts + '- ' + ' / '+ errorThrown);
+                           			}
+                  		});
+           		},
+                painted:function(){
+                	if(document.getElementById('{pagename}Update').value == 'true'){
+							Ext.Ajax.request({
+                           		url: document.getElementById('globalURIField').value +  '/{pagename}.txt',
+                           		type: 'GET',
+                           		processData: false,
+                           		dataType: 'text',
+                           			success: function(data) {
+                           				Ext.getCmp('{pagename}').removeAll();
+                                		eval(data.responseText);
+                                		document.getElementById('{pagename}Update').value == 'false';
+                            		},
+                            		error: function(data,textStauts,errorThrown) {
+                                		console.log('Error in Navigation! '+textStauts + '- ' + ' / '+ errorThrown);
+                           			}
+                  			});
+           			}
+                }
+           }
+    },
+});

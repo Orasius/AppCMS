@@ -1,0 +1,48 @@
+Ext.define('{appname}.view.{pagename}',{
+           extend: 'Ext.Container',
+           xtype:'{xtype}',
+           requires:[
+                     'Ext.Audio'
+                     ],
+           config:{
+           fullscreen: true,
+           layout: {
+           type : 'vbox',
+           pack : 'center',
+           align: 'stretch'
+           },
+           items: [
+                   {
+                   xtype: 'audio',
+                   cls: 'myAudio',
+                   id:'{pagename}Panel',
+                   url  : '{audiourl}',
+                   loop: true,
+                   }
+                   ],
+           
+           listeners:{
+                delay   : 500,
+                show:function()
+                {    
+                    if(document.getElementById('{pagename}Update').value == 'true'){
+                    
+                    	Ext.Ajax.request({
+                        	    url: document.getElementById('globalURIField').value + '/{pagename}.txt',
+                           		type: 'GET',
+                            	dataType: 'text',
+                            	success: function(data) {
+                                        Ext.getCmp('{pagename}Panel').setUrl(data.responseText);
+                                        document.getElementById('{pagename}Update').value = 'false';
+                            	},
+                            	error: function(data,textStauts,errorThrown) {
+                            		console.log('Error in Data! '+textStauts + '- ' + ' / '+ errorThrown);
+                            	}
+                        });
+                    }
+           
+                },
+            }
+           
+           }  
+});

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Hello App</title>
+      <style>
+          
+          html, body {
+              height: 100%;
+          }       
+          #appLoadingIndicator {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              margin-top: -10px;
+              margin-left: -50px;
+              width: 100px;
+              height: 20px;
+          }
+          
+          #appLoadingIndicator > * {
+              background-color: #FFFFFF;
+              float: left;
+              height: 20px;
+              margin-left: 11px;
+              width: 20px;
+              -webkit-animation-name: appLoadingIndicator;
+              -webkit-border-radius: 13px;
+              -webkit-animation-duration: 0.8s;
+              -webkit-animation-iteration-count: infinite;
+              -webkit-animation-direction: linear;
+              opacity: 0.3
+          }
+          
+          #appLoadingIndicator > :nth-child(1) {
+              -webkit-animation-delay: 0.18s;
+          }
+          
+          #appLoadingIndicator > :nth-child(2) {
+              -webkit-animation-delay: 0.42s;
+          }
+          
+          #appLoadingIndicator > :nth-child(3) {
+              -webkit-animation-delay: 0.54s;
+          }
+          
+          @-webkit-keyframes appLoadingIndicator{
+              0% {
+                  opacity: 0.3
+              }
+              
+              50% {
+                  opacity: 1;
+                  background-color:#1985D0
+              }
+              
+              100% {
+                  opacity:0.3
+              }
+          }
+          
+          
+          .indiOff{
+              font-size:22px;
+              font-weight:bold;
+              background-color:#000000;
+              color:#ffffff;
+              display:none;
+              text-align:center;
+          }
+          .indiOn{
+              font-size:22px;
+              font-weight:bold;
+              background-color:#000000;
+              color:#ffffff;
+              display:block;
+              text-align:center;
+              position: fixed;
+              width: 100%;
+              height: 100%;
+              top: 0px;
+              left: 0px;
+              background-color: rgba(0,0,0,0.7); /* black semi-transparent */
+              text-align:center;
+              padding-top:100px;   
+          }
+          </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+	<meta charset="utf-8">
+    <script type="text/javascript" charset="utf-8" src="cordova-1.9.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="jquery.min.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript">
+       
+        var  globalFileName;
+        var  globalFileContent;
+        var  globalURI;
+        var  updatesJson = "hello";
+        var  currentFile = '';
+        var  currentData = '';
+        var  appid = 'xros.4ff41be1ee39c';
+        var  platformurl = 'http://www.appc.ms/cms/';
+        var  lastupdate = '';
+        
+        allData = '{"entries":[{"title":"lastUpdate","data":"1343659020"},{"title":"About","data":"<p><u><b>amSquared </b></u> was set up by Austin Meakin and Atif Mizra in 2012 to deliver excellent online products for SMEs with outstanding one-to-one account management customer service. Together, Austin and Atifs 12 years&nbsp;of software industry experience combines a thorough grounding in&nbsp;design with first class technical competence so you can be assured&nbsp;that amSquared products will excel both aesthetically and&nbsp;functionally.</p><p><u><b>Austin Meakin</b></u><br /> Austin is a Graphic Design graduate of&nbsp;Kingston University where he has also recently completed studies for Masters in E-Commerce. Austin joined Skylab Design as a Junior Designer in 2008 before a promotion to Digital Project Managerin 2009. In 2011 Skylab Design reformed as Storm New Media and Austin&nbsp;was appointed Operations Director. Austin is also a qualified youth worker and has delivered a Duke of Edinburgh Award course on web design for Merton Youth Service.<br /><br /><u><b>Atif Mirza</b></u><br /> Atif is a Computer Software Engineering graduate from Foundation University, Islamabad in Pakistan and he holds a Masters in E-Commerce from Kingston University. Atif was a Software Engineer for Target Systems in Islamabad for four years before starting his E-Commerce Masters. He subsequently joined Storm New Media as a .Net Developer before co-founding amSquared.<br /><br /><strong><u>Rory Meakin</u></strong><br /><span>Rory is an Economics graduate from Southampton University and a Prince2 Practitioner project manager. He has worked in governance for the NHS and as a Research Associate for the TaxPayers Alliance before joining amSquared.</span> "}
+			,{"title":"Blog","data":"http://www.amsquared.co.uk/feed/"}
+			,{"title":"Consultancy","data":"<p><strong>Every</strong> project begins with a consultation, whether by telephone or face-to-face, from a project brief to a detailed business process investigation. Promotional websites usually require a telephone or face-to-face meeting, followed-up by email to agree detailed specifications. However, for larger projects with more complex requirements we advise a face-to-face meeting to ensure clarity on your specifications and deliver a project plan to save you time and money and ensure you get the product your business needs.<br /><br /><b>SOLUTIONS</b><br /><span style=\'color:#006400;\'>- Requirements elicitation reports.<br /> - Search Engine Optimisation (SEO) reports.<br /> - Online presence analysis reports.<br /> - Website proposals with estimates.<br /> - Application proposals with estimates.</span></p> "}
+			,{"title":"DesignandMarketing","data":"<p> Design that works, both functionally and aesthetically, is at the heart of every successful project. Whether your project involves a new website, print and online branding, or an application amSquared has the expertise to deliver. Our team&#39;s combination of strong backgrounds in both graphic design and software engineering means we can produce great-looking, functional products that work for your business.</p><p><span style=\'color:#b22222;\'><strong>SOLUTIONS </strong></span></p><ul><li> Online branding.</li><li> Printed branding.</li><li> Web design.</li><li> User experience.</li><li> Newsletters.</li><li> Search Engine Optimisation.</li></ul> "}
+			,{"title":"Applications","data":"<p> Websites and software have now converged and a &#39;simple website&#39; today is very different compared to five years ago. Users expect content to be presented intuitively, bespoke web applications are becoming ever more popular and a Content Management System (CMS) is now standard. At amSquared we offer a variety of products from simple promotional websites right through to bespoke desktop applications.<br /> We across platforms to develop cross-browser web applications and native applications for mobile and desktop operating systems. <b>WEBSITES</b><br /> - CMS open source.<br /> - Promotional websites.<br /> - Micro &amp; satellite sites.<br /> - CMS bespoke.<br /><br /><b>MOBILE APPLICATIONS</b><br /><br /> - Business apps (corporate).<br /> - Promotional apps (consumer).<br /> - Native iPhone apps.<br /> - Native Android apps.<br /> - HTML5 web apps.<br /><br /><b>DESKTOP APPLICATIONS</b><br /><br /> - Various bespoke solutions.<br /><br /><b>BUSINESS AUTOMATION</b><br /><br /> - Various bespoke solutions.</p> "}
+			,{"title":"CustomerService","data":"<p> We pride ourselves on our outstanding customer service and believe that first class account management is the foundation of all successful projects. We achieve this through personal service and a client-centred approach to project planning right from the start to tailor our services to your specific needs.<br /><br /> The amSquared approach prioritises quality products and long-term relationships over fast sales and one-off transactions.<br /><br /><b>SOLUTIONS</b><br /> - Enhanced CMS support.<br /> - Systems training.<br /> - Web design and marketing education.<br /> - Monthly key stats reporting.<br /> - Continuous life cycle support.</p> "}
+			,{"title":"Portfolio","data":"http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_CAE.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_TPA.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_AM.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_CS2.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_GFC.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_GS.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_GTA.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_HF.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_IP.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_LS.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_MGT.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_PG.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_SLV1.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_TRG.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_TWDS.png,http://appc.ms/cms/upload/apps/xros.4ff41be1ee39c/AM2_BigSquare_VR.png,"}
+			,{"title":"AddressonMap","data":"-0.302376,51.389396"}
+			,{"title":"ContactForm","data":"ContactForm"}
+			,{"title":"Contact","data":"Contact Form,page,contactForm|Address on Map,page,addressonMapView"},{"title":"Services","data":"Design and Marketing,page,designMarketingView|Consultancy,page,consultancyView|Applications,page,applicationsView|Customer Service,page,customerServiceView"},{"title":"Testimonials","data":"<p style=\'margin-bottom: 0cm; \'><b><i>Harry&nbsp;Hodgson </i><font color=\'#000099\'>- Harrys Eggs</font></b></p><p style=\'margin-bottom: 0cm; \'> &#39;I have worked on a couple of&nbsp;projects with Austin now and I couldn&#39;t regard him any more highly.</p><p style=\'margin-bottom: 0cm\'> He has designed two websites for me and some packaging. Both websites&nbsp;were visually stunning and I have received many comments on this! The&nbsp;product packaging Austin designed was a start-up project and the high&nbsp;level of design which he incorporated enabled us to get our product&nbsp;into over 100 major high street and department stores which wouldn&#39;t&nbsp;have been possible with out the great packaging. If anyone is&nbsp;considering using Austin&#39;s new business I would say go for it! He&nbsp;is young and forward thinking, he delivers on time and in a very&nbsp;hassle free way! He is great to deal with but more importantly his&nbsp;design is first class!&#39;</p><p style=\'margin-bottom: 0cm; \'><b><i>Shazia&nbsp;Khadim </i><font color=\'#000099\'>- Merton Youth Service</font></b></p><p style=\'margin-bottom: 0cm\'> &#39;I have known Austin in a&nbsp;professional capacity for over 5 years. He has worked on, developed&nbsp;and delivered several projects during this time for Merton Youth&nbsp;Service and our partners. He has worked on generic youth club&nbsp;sessions as well as specific programmes where he has had to work as&nbsp;part of a team to plan, organise, deliver and evaluate activities for&nbsp;young people. He has the ability to easily approach young people and&nbsp;children to initiate conversations and to develop relationships with&nbsp;young people, which gain their trust and confidence.</p><p style=\'margin-bottom: 0cm\'> I would whole-heartedly recommend&nbsp;Austin as a committed, self-motivated person who always strives to&nbsp;achieve the highest standard of work and would be an asset to any<br /> team / organisation he joins.&#39;</p><p style=\'margin-bottom: 0cm\'><b><i>Thiago Azevedo</i><font color=\'#000099\'> -&nbsp;MGT Power</font></b></p><p style=\'margin-bottom: 0cm\'> &#39;Thanks for your help with this&nbsp;[website] and the job done, the result is excellent, especially given&nbsp;how little of our time and feedback went into it. We are very happy<br /> with the result.&#39;</p><p style=\'margin-bottom: 0cm\'><b><i>F Warner </i><font color=\'#000099\'>- PDC</font></b></p><p style=\'margin-bottom: 0cm\'> &#39;We used Austin to visualise some of&nbsp;our ideas, we discussed project ideas and the next day we had print&nbsp;ready vector files. Austin is a pleasure to work with, using his&nbsp;excellent project management skills Austin consistently delivered<br /> projects on-time and on-budget.&#39;</p><p><b><i>James Syme</i><font color=\'#000099\'> - Storm New Media</font></b></p><p style=\'margin-bottom: 0cm\'> &#39;Austin returned [from University] to&nbsp;work to help keep the company going. The company went though a severe&nbsp;restructuring process involving the two directors forming new&nbsp;company&#39;s and splitting the assets etc which Austin facilitated for<br /> several months.&#39;</p> "}
+			,{"title":"Home","data":"About,page,aboutView|Testimonials,page,testimonialsView"}]}';
+        	
+        function getPageData(pageName,jsonData)
+        {
+            getData = jQuery.parseJSON(jsonData);
+            for(c = 0;c < getData.entries.length;c++)
+            {	
+                if(getData.entries[c].title == pageName)
+                    pageData = getData.entries[c].data;
+            }
+            return pageData;
+        }
+     
+
+        function checkUpdates()
+        {
+    			Ext.Ajax.request({
+				    url: document.getElementById('globalURIField').value+'/.'+appid+'.dat',
+					timeout: 5000,
+					disableCaching: false,
+				    success: function(response){
+				    	//console.log(response.responseText);
+				    	newData = jQuery.parseJSON(response.responseText);
+				    	lastUpdate = newData.entries[0].data;
+				    	console.log('LAST UPDATE = ' + lastUpdate);
+				    	updateFromWeb(platformurl + 'androidupdate.php?id='+appid+'&lastupdate='+lastUpdate);
+				    	console.log('UPDATE URL = '+platformurl + 'androidupdate.php?id='+appid+'&lastupdate='+lastUpdate);
+				    },
+					failure: function(){
+							
+					}
+				});					
+        }
+        
+        function onDeviceResume()
+        {
+        	 checkUpdates();
+        }
+        
+        
+        function writeCurrentFile()
+        {
+            writeFile(currentFile,currentData);
+            console.log('WRITING FILE = ' + currentFile);
+        }
+        
+
+        function onDeviceReady() {
+            
+        	document.addEventListener("resume", onDeviceResume, false);
+            
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+        	//i=0;
+           	// myLoop();
+            //console.log('DEVICE READY FIRED');
+           	//checkUpdates();
+        }
+        
+        function onFileSystemSuccess(fileSystem) {
+            globalURI = fileSystem.root.fullPath;
+            //fileSystemRoot = fileSystem.root;
+            document.getElementById('globalURIField').value = globalURI;
+            setFileName('.'+appid+'.dat');
+            setFileContent(allData);
+            gotFSWrite(fileSystem,'.'+appid+'.dat');
+        }
+        
+        
+        function fail(evt) {
+            console.log(evt);
+        }
+        
+        
+        /************************ 
+         Writing File
+         *************************/
+        
+         function writeFile(fileName,data)
+         {
+             setFileName(fileName);
+             setFileContent(data);
+             loadFileSystemForWriting(fileName);
+             //gotFSWrite(fileSystem,fileName);
+         }
+        
+         function loadFileSystemForWriting(fileName) 
+         {
+             window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFSWrite, fail);
+         }
+         
+        
+        function gotFSWrite(fileSystem,fileName) {
+        	fileSystem.root.getFile(globalFileName, {create: true,exclusive: false}, gotFileEntryWriter, fail);
+        }
+                
+        
+        function gotFileEntryWriter(fileEntry) {
+            fileEntry.createWriter(gotFileWriter, fail);
+        }
+        
+        
+        function gotFileWriter(writer) {
+            
+            writer.onwrite = function(evt) {
+            	conole.log('WRITTEN');
+            	//console.write('Current Writing File = ' + globalFileName);
+            	//console.write('Current Writing File Data = ' + globalFileContent);
+            };
+            writer.write(globalFileContent);
+        }
+    
+        function setFileName(fileName)
+        {
+            globalFileName = fileName;
+        }
+        
+        function setFileContent(data)
+        {
+            globalFileContent = data;
+        }
+        
+        
+        /************************ 
+         End of Writing File
+         *************************/
+        
+        /**********************
+         Reading files from Web
+         ***********************/
+        function getWebFileContent(userurl)
+        {
+            document.getElementById('indi').className = 'indiOn';
+            $.ajax({
+                   url: userurl,
+                   type: 'GET',
+                   processData: false,
+                   dataType: 'text',
+                   success: function(data) {
+                        document.getElementById('indi').className = 'indiOff';
+                        updatesJson = data;
+                   },
+                   error: function(data,textStauts,errorThrown) {
+                        console.log('Error! ' + errorThrown);
+                   }
+                   });
+        }
+        
+		
+        function updateFromWeb(userurl)
+        {
+            $.ajax({
+                   url: userurl,
+                   type: 'GET',
+                   processData: false,
+                   dataType: 'text',
+                   success: function(data) {
+                        //console.log(data);
+                        if(data != 'no')
+                        {
+                        	currentFile='.'+appid+'.dat';
+                        	currentData = data;
+                        	console.log('UPDATE DATA = ' + data);
+                        	writeCurrentFile();
+                        	document.getElementById('updateData').value = 'YES';
+                        }
+                        else{
+                            console.log('No Update');
+                        }
+                   },
+                   error: function(data,textStauts,errorThrown) {
+                        console.log('Error! ' + errorThrown);
+                   }
+                   });
+        }
+	function onBodyLoad()
+	{		
+		document.addEventListener("deviceready", onDeviceReady, false);		
+  	}
+        
+        
+        
+        function html_entity_decode (string, quote_style) {
+            var hash_map = {},
+            symbol = '',
+            tmp_str = '',
+            entity = '';
+            tmp_str = string.toString();
+            
+            if (false === (hash_map = this.get_html_translation_table('HTML_ENTITIES', quote_style))) {
+                return false;
+            }
+            
+            // fix &amp; problem
+            // http://phpjs.org/functions/get_html_translation_table:416#comment_97660
+            delete(hash_map['&']);
+            hash_map['&'] = '&amp;';
+            
+            for (symbol in hash_map) {
+                entity = hash_map[symbol];
+                tmp_str = tmp_str.split(entity).join(symbol);
+            }
+            tmp_str = tmp_str.split('&#039;').join("'");
+            
+            return tmp_str;
+        }
+        
+    
+        
+        function stripslashes(str) {
+            str=str.replace(/\\'/g,'\'');
+            str=str.replace(/\\"/g,'"');
+                            str=str.replace(/\\0/g,'\0');
+                            str=str.replace(/\\\\/g,'\\');
+                            return str;
+                            }
+                            
+    </script>
+        
+    <script id="microloader" type="text/javascript" src="sdk/microloader/development.js"></script>
+    <script type="text/javascript" src="encoder.js"></script>
+  </head>
+  <body onload="onBodyLoad()">
+      <div id="appLoadingIndicator">
+          <div></div>
+          <div></div>
+          <div></div>
+      </div>
+      <input type="hidden" id="globalURIField" value="1" />
+      <input type="hidden" id="updateData" value="false" />
+       <input type="hidden" id="BlogUpdate" value="false" />
+	<input type="hidden" id="AboutUpdate" value="false" />
+	<input type="hidden" id="ConsultancyUpdate" value="false" />
+	<input type="hidden" id="DesignandMarketingUpdate" value="false" />
+	<input type="hidden" id="ApplicationsUpdate" value="false" />
+	<input type="hidden" id="CustomerServiceUpdate" value="false" />
+	<input type="hidden" id="ContactFormUpdate" value="false" />
+	<input type="hidden" id="TestimonialsUpdate" value="false" />
+	<input type="hidden" id="AddressonMapUpdate" value="false" />
+	<input type="hidden" id="ContactUpdate" value="false" />
+	<input type="hidden" id="ServicesUpdate" value="false" />
+	<input type="hidden" id="HomeUpdate" value="false" />
+	
+  </body>
+</html>

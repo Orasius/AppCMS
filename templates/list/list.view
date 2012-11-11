@@ -1,0 +1,40 @@
+Ext.define('{appname}.view.{pagename}',{
+	extend: 'Ext.navigation.View',
+	xtype: '{xtype}',
+	requires: [
+        'Ext.navigation.View',
+	],
+		
+	config:{
+           
+           items:[
+                  {
+                  xtype: 'list',
+                  title:'{pagetitle}',
+                  id:'{pagename}',
+                  indexBar:true,
+			      grouped: true,
+                  store: '{pagename}',
+                  itemTpl:'{title}',
+                  }],
+            listeners:{
+                initialize:function(){
+	                Ext.getCmp('{pagename}').getStore().load();
+                },
+                painted:function()
+                {
+                	if(document.getElementById('{pagename}Update').value == 'true'){
+						Ext.getCmp('{pagename}').getStore().load();
+						document.getElementById('{pagename}Update').value = 'false';
+					}
+                },
+                show:function(){
+                    
+                },
+                updatedata:function(){
+                   
+                }
+           }
+           
+	}	
+});

@@ -1,0 +1,55 @@
+Ext.define('{appname}.view.{pagename}',{
+	extend: 'Ext.navigation.View',
+	xtype: '{xtype}',
+	requires: [
+        'Ext.dataview.List',
+        'Ext.Ajax'
+	],
+		
+	config:{
+				items:[
+				{
+					xtype: 'list',
+					title:'{pagetitle}',
+					id:'{pagename}Panel',
+					store: '{pagename}',
+					itemTpl:'{title}',
+					//cls: 'rssItem',
+				}],
+				listeners:{
+		           initialize:function(){
+    						jQuery.get(document.getElementById('globalURIField').value + '/{pagename}.txt', function(data) {
+                          		 store = Ext.getCmp('{pagename}').getStore();
+	                           	 store.setProxy({
+                                          type: 'jsonp',
+                                          url: 'https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q='+data,
+                                          reader: {
+                                                type: 'json',
+                                                rootProperty: 'responseData.feed.entries'
+                                          }
+                           		});
+                           		Ext.getCmp('{pagename}').getStore().load();
+                			});
+    				},
+		           painted:function()
+         		   {
+         		   		if(document.getElementById('{pagename}Update').value == 'true'){
+							jQuery.get(document.getElementById('globalURIField').value + '/{pagename}.txt', function(data) {
+                          		 store = Ext.getCmp('{pagename}').getStore();
+	                           	 store.setProxy({
+                                          type: 'jsonp',
+                                          url: 'https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q='+data,
+                                          reader: {
+                                                type: 'json',
+                                                rootProperty: 'responseData.feed.entries'
+                                          }
+                           		});
+                           		Ext.getCmp('{pagename}').getStore().load();
+                           		document.getElementById('{pagename}Update').value = 'false';
+                			});
+                			
+           				}
+           		   },
+           		}
+	}	
+});

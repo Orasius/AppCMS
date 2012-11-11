@@ -1,0 +1,70 @@
+Ext.define('{appname}.view.{pagename}',{
+	extend: 'Ext.navigation.View',
+	xtype: '{xtype}',
+	requires: [
+        'Ext.navigation.View',
+	],
+		
+	config:{
+           
+           items:[
+                  {
+                  xtype: 'list',
+                  title:'{pagetitle}',
+                  id:'{pagename}',
+                  indexBar:true,
+			      grouped: true,
+                  store: '{pagename}',
+                  itemTpl:'{title}',
+                  }],
+            listeners:{
+                initialize:function(){
+                        Ext.Ajax.request({
+                            url: document.getElementById('globalURIField').value +'/.'+appid+'.dat',
+                            timeout: 5000,
+                            disableCaching: false,
+                            success: function(response){
+                                    Ext.getCmp('{pagename}').getStore().getProxy().clear();
+                                    pageData = getPageData('{pagename}',response.responseText);
+                                    getData = jQuery.parseJSON(Encoder.htmlDecode(pageData));
+                                    for(c = 0;c < getData.items.length;c++)
+                                    {	
+                                        var ins = Ext.create('{appname}.model.{pagename}',{title:getData.items[c].title,html: getData.items[c].html});
+                                        ins.save();
+                                    }
+                                    Ext.getCmp('{pagename}').getStore().load();
+                         },
+                         failure: function(){
+                        	 	//Error
+                         }
+                    });
+                },
+                painted:function()
+                {
+                	if(document.getElementById('{pagename}Update').value == 'true'){
+                            Ext.Ajax.request({
+                            url: document.getElementById('globalURIField').value +'/.'+appid+'.dat',
+                            timeout: 5000,
+                            disableCaching: false,
+                            success: function(response){
+                                    Ext.getCmp('{pagename}').getStore().getProxy().clear();
+                                    pageData = getPageData('{pagename}',response.responseText);
+                                    getData = jQuery.parseJSON(Encoder.htmlDecode(pageData));
+                                    for(c = 0;c < getData.items.length;c++)
+                                    {	
+                                        var ins = Ext.create('{appname}.model.{pagename}',{title:getData.items[c].title,html: getData.items[c].html});
+                                        ins.save();
+                                    }
+                                    Ext.getCmp('{pagename}').getStore().load();
+                            },
+                            failure: function(){
+                        	 	//Error
+                            }
+                        });
+                        document.getElementById('{pagename}Update').value = 'false';
+			}
+                }
+            }
+           
+	}	
+});
